@@ -8,7 +8,7 @@
 type ="*"
 
 #number1=返回值
-if
+
 def chengfa():
     pass
 def chufa():
