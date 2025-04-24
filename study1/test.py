@@ -12,7 +12,7 @@
 #         print(data, end="")
 #     print()
 def 乘法口诀():
-    for numbers1 in range(1, 10):
+    for numbers1 in range(1, 100):
         for numbers2 in range(1, numbers1 + 1):
             data = str(numbers1) + " * " + str(numbers2) + " = " + str(numbers1 * numbers2) + "  "
             print(data, end="")

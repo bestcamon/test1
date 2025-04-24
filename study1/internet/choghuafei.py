@@ -20,7 +20,6 @@ import sys
 #     或者 话费任然不足，再请充值
 
 map_data = {}
-data_list = [1, 2, 3, 4, 5]
 
 
 # 数据部分

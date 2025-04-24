@@ -67,7 +67,7 @@ payment = 0
 
 
 def pay_goods(gold_data, tempvar):
-    if gold_data >= str(tempvar): True
+    if gold_data >= str(tempvar) : True
     balance = gold_data - str(tempvar)
     print("付款成功，余额还剩" + str(balance) + "元")
 
@@ -158,4 +158,4 @@ if __name__ == '__main__':
 #     print("是否继续浏览商品？ Y/N")
 #     input_value = input()
 #     if input_value == "Y" or input_value == "y":
-#         continue
+#         continu

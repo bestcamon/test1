@@ -44,7 +44,7 @@ def pay_goods (gold_data,tempvar):
 
 
 
-
+. = ()
 
 
 
