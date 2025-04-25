@@ -44,14 +44,23 @@ class user_temp(user):
         self.name = "temp"
         self.money = 0
 
-    def __init__(self, id, name, money):
+    def init(self, id, name, money):
         self.id = id
         self.name = name
         self.money = money
 
-    def check(self, product_price):
-        self.money = self.money - product_price * 1.1
+    def check(self, product):
+        self.money = self.money - product.price * 1.1
         self.product_list.append(product)
+
+
+#     product = product(1, "牙刷", 10, 10)
+#     返回客户信息 = 查找用户方法()
+#               使用客户信息替换临时用户变量
+# user1 = user_temp()
+# user2 = user_vip(1, "sam", 100)
+# user1 = user2
+# print(user1.check(product))
 
 
 def init():
@@ -68,7 +77,7 @@ def user_init():
 
 
 def print_product_list(product_list):
-    for product  in product_list :
+    for product in product_list:
         product.__print__()
 
 
@@ -91,3 +100,7 @@ def main():
         else:
             print("退出程序")
             sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()
