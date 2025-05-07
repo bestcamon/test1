@@ -1,4 +1,7 @@
+import os
 import sys
+
+user_file_path = r"E:\workspace\githubDownloads\test1\data\user_data.txt"
 
 
 class user():
@@ -28,7 +31,7 @@ def top_up(user, money):
     return user
 
 
-def init():
+def user_init():
     user_list = []
     user1 = user(12345, 50)
     user2 = user(23456, 20)
@@ -37,6 +40,45 @@ def init():
     user_list.append(user2)
     user_list.append(user3)
     return user_list
+
+
+def read_user_file():
+    a = os.path.exists(user_file_path)
+    user_data_list = []
+    user_file = open(user_file_path, "r")
+    with user_file:
+        user_value_list = user_file.readlines()
+        for user_value in user_value_list:
+            user_value = user_value.replace("\n", "")
+            user_data_list.append(user_value)
+    user_file.close()
+    return user_data_list
+
+
+# 110,50
+# 119,100
+# 120,200
+def init():
+    user_data_list = read_user_file()
+    user_list = []
+    for user_value in user_data_list:
+        user_value_arr = user_value.split(',')
+        user_obj = user(int(user_value_arr[0]), int(user_value_arr[1]))
+        user_list.append(user_obj)
+    return user_list
+
+
+def save_data(user_list):
+    a = os.path.exists(user_file_path)
+    user_data_list = []
+    for user in user_list:
+        data_user = str(user.number) + "," + str(user.money) + "\n"
+        user_data_list.append(data_user)
+
+    user_file = open(user_file_path, "w")
+    with user_file:
+        user_file.writelines(user_data_list)
+    user_file.close()
 
 
 if __name__ == '__main__':
@@ -57,6 +99,7 @@ if __name__ == '__main__':
             if input_var == "Y":
                 continue
             else:
+                save_data(user_list)
                 sys.exit()
         else:
             sys.exit()
