@@ -45,13 +45,26 @@ def user_init():
 def read_user_file():
     a = os.path.exists(user_file_path)
     user_data_list = []
-    user_file = open(user_file_path, "r")
-    with user_file:
-        user_value_list = user_file.readlines()
-        for user_value in user_value_list:
-            user_value = user_value.replace("\n", "")
+
+    # case 1
+    # with 语句：当使用 with 语句打开文件时，Python 自动管理文件的打开和关闭过程。一旦执行流离开 with 代码块（无论是正常结束还是因为异常而提前退出），文件将自动关闭。
+    with  open(user_file_path, "r") as file:
+        for line in file:
+            user_value = line.strip()  # 使用 strip() 去除行末的换行符和空白字符
             user_data_list.append(user_value)
-    user_file.close()
+
+    # case 2
+    # 传统方式，手动打开和关闭文件
+    # user_file = None
+    # try:
+    #     user_file = open(user_file_path, "r")
+    #     for line in user_file:
+    #         user_value = line.strip()  # 使用 strip() 去除行末的换行符和空白字符
+    #         user_data_list.append(user_value)
+    # finally:
+    #     if user_file is not None:
+    #         user_file.close()
+
     return user_data_list
 
 
