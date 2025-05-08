@@ -28,28 +28,26 @@ def find_user(user_list, username, password):
 
 
 def login():
-    users = user_init()
-    load_user_list(users)
-
-
-def load_user_list(users):
     attempts_longin = 0
     max_attempts_login = 3
-    while attempts_longin < max_attempts_login:
-        # 尝试过不用int  但是我明明已经设置atemp_longin已经定义了等于0
-        # 报错显示为解析到这个定义函数
-        input_name = input("请输入用户名: ")
-        input_pwd = input("请输入密码: ")
-        user_temp = find_user(users, input_name, input_pwd)
-        if user_temp != None:
-            print("欢迎登录")
+    users = user_init()
+
+    while True:
+        if attempts_longin < max_attempts_login:
+            # 尝试过不用int  但是我明明已经设置atemp_longin已经定义了等于0
+            # 报错显示为解析到这个定义函数
+            input_name = input("请输入用户名: ")
+            input_pwd = input("请输入密码: ")
+            user_temp = find_user(users, input_name, input_pwd)
+            if user_temp != None:
+                print("欢迎登录")
+                sys.exit()
+            else:
+                attempts_longin = attempts_longin + 1
+                print("密码错误，请重新输入")
+        elif attempts_longin >= max_attempts_login:
+            print("用户多次输入错误，账户已经锁定")
             sys.exit()
-        else:
-            attempts_longin = attempts_longin + 1
-            print("密码错误，请重新输入")
-    else:
-        print("用户多次输入错误，账户已经锁定")
-        sys.exit()
 
 
 if __name__ == '__main__':
