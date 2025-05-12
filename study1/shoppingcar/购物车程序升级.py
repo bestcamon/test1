@@ -80,6 +80,9 @@ class shopping_car():
     def __init__(self):
         self.product_list = []
 
+    def shopping_car_is_None(self):
+        return len(self.product_list) == 0
+
     def add_product(self, product):
         product_temp = self.find_product(product.id)
         if product_temp != None:
@@ -131,56 +134,27 @@ def user_init():
     return users
 
 
-user_list_file_path = r"D:\python workspace\test1\data\product_list.txt"
-product_list_file_path = r"D:\python workspace\test1\data\user_list.txt"
+user_list_file_path = r"E:\workspace\githubDownloads\test1\data\user_list.txt"
+product_list_file_path = r"E:\workspace\githubDownloads\test1\data\product_list.txt"
 
 
-# def read_sys_shoppingcar():
-#     a = os.path.exists(user_list_file_path)
-#     b = os.path.exists(product_list_file_path)
-#
-#     user_list = []
-#     product_list =[]
-#     x = user_list
-#     y = product_list
-#     read_sys_shoppingcar =[x,y]
-#     with  open(user_list_file_path, "r") as file:
-#         for line in file:
-#             user_value = line.strip()
-#             user_list.append(user_value)
-#             return user_list
-#     with  open(product_list_file_path, "r") as file:
-#         for line in file:
-#             product_value = line.strip()
-#             product_list.append(product_value)
-#             return product_list
-## def init():
-#     user_list = read_sys_shoppingcar[1]
-#
-#     product_list  = read_sys_shoppingcar[2]
-#     for user_value in user_data_list:
-#         user_value_arr = user_value.split(',')
-#         user_obj = user(int(user_value_arr[0]), int(user_value_arr[1]))
-#         user_list.append(user_obj)
-#     return user_list
-#     return product_init()
 def read_user_list():
     a = os.path.exists(user_list_file_path)
     user_list = []
-    with open(user_list_file_path, "r") as file:
+    with open(user_list_file_path, encoding='utf-8', mode="r") as file:
         for line in file:
             user_value = line.strip()
             user_list.append(user_value)
-            return user_list
+    return user_list
 
 
 def read_product_list():
     product_list = []
-    with open(product_list_file_path, "r") as file:
+    with open(product_list_file_path, encoding='utf-8', mode="r") as file:
         for line in file:
             product_value = line.strip()
             product_list.append(product_value)
-            return product_list
+    return product_list
 
 
 def init():
@@ -189,47 +163,42 @@ def init():
     for user_value in user_data_list:
         user_value_arr = user_value.split(",")
         user_obj = user_vip(str(user_value_arr[0]), str(user_value_arr[1]), int(user_value_arr[2]),
-                            str(user_value_arr[4]), int(user_value_arr[5]))
+                            str(user_value_arr[3]), int(user_value_arr[4]))
         user_list.append(user_obj)
-        return user_list
 
     product_data_list = read_product_list()
     product_list = []
     for product_value in product_data_list:
         product_value_arr = product_value.split(",")
-        product_obj = product(int(product_value_arr[1]), str(product_value_arr[2]),
-                              int(product_value_arr[3]),
-                              int(product_value_arr[4]))
+        product_obj = product(int(product_value_arr[0]), str(product_value_arr[1]), int(product_value_arr[2]),
+                              int(product_value_arr[3]))
         product_list.append(product_obj)
-        return product_list
+
+    return user_list, product_list
 
 
 def save_user_data(user_list):
-    a = os.path.exists(user_list_file_path)
     user_data_list = []
     for user_vip in user_list:
-        user_data = str(user_vip.username) + "," + str(user_vip.password) + "," + str(user_vip.name) + "," + str(
-            user_vip.id) + "," + str(user_vip.money) + "\n"
+        user_data = str(user_vip.username) + "," + str(user_vip.password) + "," + str(user_vip.id) + "," + str(
+            user_vip.name) + "," + str(user_vip.money) + "\n"
         user_data_list.append(user_data)
 
-    user_file = open(user_list_file_path, "w")
-    with user_file:
+    with open(user_list_file_path, encoding='utf-8', mode="w") as user_file:
         user_file.writelines(user_data_list)
-    user_file.close()
+        user_file.close()
 
 
 def save_product_data(product_list):
-    a = os.path.exists(product_list_file_path)
     product_data_list = []
     for product in product_list:
         product_data = str(product.id) + "," + str(product.name) + "," + str(product.price) + "," + str(
             product.stock) + "\n"
         product_data_list.append(product_data)
 
-    product_file = open(product_list_file_path, "w")
-    with product_file:
+    with open(product_list_file_path, encoding='utf-8', mode="w") as product_file:
         product_file.writelines(product_data_list)
-    product_file.close()
+        product_file.close()
 
 
 def find_user(users, username, password):
@@ -238,15 +207,14 @@ def find_user(users, username, password):
             return user
 
 
-def login():
+def login(users):
     atemp_login = 0
     max_atemp_login = 3
     while True:
         if atemp_login < max_atemp_login:
-            users = user_init()
             input_name = input("请输入用户名: ")
             input_pwd = input("请输入密码: ")
-            user_temp = find_user(users, input_name, input_pwd,user.name,users.money)
+            user_temp = find_user(users, input_name, input_pwd)
             if user_temp != None:
                 print("欢迎登录")
                 return user_temp
@@ -326,14 +294,10 @@ def shopping(user, product_list):
                 print("用户钱包" + str(user.money) + "元")
                 print("开始结账")
                 user.check()
-                product.stoke = product_temp.stock - product_temp.shopping_car_product_count
                 if user.money > 0:
-
+                    product.stock = product_temp.stock - product_temp.shopping_car_product_count
                     print("感谢本次购物，账户余额还剩" + str(user.money) + "元")
-                    return user
-                    save_user_data(user)
-                    save_product_data(product)
-                    sys.exit()
+                    return
                 else:
                     print("本次购物还需充值" + abs(user.money) + "元")
                     print("账户余额不足，请问是否充值")
@@ -341,32 +305,23 @@ def shopping(user, product_list):
                     var1 = int(input())
                     user.update_money(var1)
                     user.check()
-                    product.stock = product.stock - product_temp.shopping_car_product_count
+                    product.stock = product_temp.stock - product_temp.shopping_car_product_count
                     print("感谢本次购物，账户余额还剩" + str(user.money) + "元")
-                    return user
-                    save_user_data(user)
-                    save_product_data(product)
-                    sys.exit()
+                    return
 
 
 def main():
-    user = login()
-    product_list = init()
-    while True:
+    arr = init()
+    user_list = arr[0]
+    product_list = arr[1]
+    user = login(user_list)
+    print("用户是否购物y/n")
+    input_var = input().upper()
+    if input_var == "Y":
         print_product_list(product_list)
-        print("用户是否购物y/n")
-        input_var = input().upper()
-        if input_var == "Y":
-            shopping(user, product_list)
-            if len(user.product_list) != 0:
-                print_product_list(user.product_list)
-                print(user.money)
-                print("用户是否继续购物y/n")
-                input_var = input().upper()
-                if input_var == "Y":
-                    continue
-                else:
-                    sys.exit()
+        shopping(user, product_list)
+        save_user_data(user_list)
+        save_product_data(product_list)
 
 
 #
