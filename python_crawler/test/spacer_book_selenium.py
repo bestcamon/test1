@@ -32,7 +32,7 @@ def find_title():  # 每部小说的名称
 def find_chapter_name_and_url():
     chapter_name_and_url_dict = dict()
     xpath_options = [
-        "//div[@class='mulu-list']",
+        "//*[@id='toc-list']",
         "//div[@class='mulu-list quanji']",
         "//div[@class='mulu-list-2 quanji']"
     ]
@@ -139,13 +139,17 @@ def get_book_name_and_url(table_of_contents_dict):
             h3_path = create_directory(h2_path, chapter_name_item)
             h3_chapter_url_item = table_of_contents_dict[tar_name_item][chapter_name_item]
             open_url(h3_chapter_url_item)
-            h4_book_list = driver.find_elements(By.XPATH, "//div[@class='mulu-list']/ul/li")
+            h4_book_list = driver.find_elements(By.XPATH, "//div[@class='book-category-list']/ul/li")
 
-            if (len(h4_book_list) == 1 and h4_book_list[0].text == "没有分类") or (len(h4_book_list) == 0):
+            if (len(h4_book_list) == 1 and (
+                    h4_book_list[0].text == "没有分类" or h4_book_list[0].text == "没有找到相关书籍分类。")) or (
+                    len(h4_book_list) == 0):
                 continue
             for h4_book_item in h4_book_list:
                 book_name = h4_book_item.find_element(By.CSS_SELECTOR, 'a').text
                 book_url = h4_book_item.find_element(By.CSS_SELECTOR, 'a').get_attribute("href")
+                if book_url == 'https://www.51shucheng.net/lishi/shiji':
+                    print(book_url)
                 chapter_dict[book_name] = [book_url, h3_path]
                 print(tar_name_item, chapter_name_item, book_name, book_url)
     return chapter_dict
@@ -153,8 +157,11 @@ def get_book_name_and_url(table_of_contents_dict):
 
 def read_json(mian_path, json_file_name):
     path = os.path.join(mian_path, json_file_name)
-    with open(path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    if os.path.exists(path):
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    else:
+        return {}
 
 
 # 获取网页
@@ -167,8 +174,8 @@ if __name__ == '__main__':
     create_directory(mian_path, "")
     # 下载无忧书城所有分类下的小说
     main_url = 'https://www.51shucheng.net/fenlei'
-    # chapter_dict_json = read_json(mian_path, "chapter_dict.json")
-    chapter_dict_json = {}
+    chapter_dict_json = read_json(mian_path, "chapter_dict.json")
+    # chapter_dict_json = {}
     chapter_dict = dict() if len(chapter_dict_json) == 0 else chapter_dict_json
     if not chapter_dict_json:
         open_url(main_url)
