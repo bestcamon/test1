@@ -1,6 +1,5 @@
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 # https://googlechromelabs.github.io/chrome-for-testing/#stable
@@ -12,9 +11,8 @@ options.add_argument("--ignore-certificate-errors")  # 可选，忽略证书错�
 options.add_argument("--no-sandbox")  # 可选，禁用沙盒模式
 
 # 1.创建浏览器对象
-chrome_driver_path = 'E:\\Tools\\chrome-win64\\chromedriver.exe'
-Service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=Service, options=options)
+chrome_driver_path = 'C:\\Program Files\\Tools\\chrome-win64\\chromedriver.exe'
+driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
 
 
 # 把打开网页获取页面的步骤写成函数
