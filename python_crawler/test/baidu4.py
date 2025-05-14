@@ -5,7 +5,9 @@ from selenium.webdriver.common.by import By
 MMC_BATCH_ADDRESS = "https://www.baidu.com/"
 #https://googlechromelabs.github.io/chrome-for-testing/#stable
 #创建webDriver对象，指明使用chrome浏览器驱动
-wd = webdriver.Chrome(executable_path='E:\\tools\\chrome_test_123.0.6312.122\\chromedriver.exe')
+chrome_driver_path = 'E:\\Tools\\chrome-win64\\chromedriver.exe'
+service = Service(executable_path=chrome_driver_path)
+wd = webdriver.Chrome(service=service)
 
 #关闭页面退出
 #wd.close()
